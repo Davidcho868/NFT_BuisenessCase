@@ -22,6 +22,9 @@ class Image
     #[ORM\Column(length: 255)]
     private ?string $description_image = null;
 
+    #[ORM\OneToOne(mappedBy: 'correspond', cascade: ['persist', 'remove'])]
+    private ?NFT $nFT = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,23 @@ class Image
     public function setDescriptionImage(string $description_image): static
     {
         $this->description_image = $description_image;
+
+        return $this;
+    }
+
+    public function getNFT(): ?NFT
+    {
+        return $this->nFT;
+    }
+
+    public function setNFT(NFT $nFT): static
+    {
+        // set the owning side of the relation if necessary
+        if ($nFT->getCorrespond() !== $this) {
+            $nFT->setCorrespond($this);
+        }
+
+        $this->nFT = $nFT;
 
         return $this;
     }

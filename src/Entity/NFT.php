@@ -22,6 +22,22 @@ class NFT
     #[ORM\Column]
     private ?bool $en_vente = null;
 
+    #[ORM\ManyToOne(inversedBy: 'nFTs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Acheter $achats = null;
+
+    #[ORM\OneToOne(inversedBy: 'nFT', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Image $correspond = null;
+
+    #[ORM\ManyToOne(inversedBy: 'nFTs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Categorie $appartiens = null;
+
+    #[ORM\ManyToOne(inversedBy: 'nFTs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ETH $vaux = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +75,54 @@ class NFT
     public function setEnVente(bool $en_vente): static
     {
         $this->en_vente = $en_vente;
+
+        return $this;
+    }
+
+    public function getAchats(): ?Acheter
+    {
+        return $this->achats;
+    }
+
+    public function setAchats(?Acheter $achats): static
+    {
+        $this->achats = $achats;
+
+        return $this;
+    }
+
+    public function getCorrespond(): ?Image
+    {
+        return $this->correspond;
+    }
+
+    public function setCorrespond(Image $correspond): static
+    {
+        $this->correspond = $correspond;
+
+        return $this;
+    }
+
+    public function getAppartiens(): ?Categorie
+    {
+        return $this->appartiens;
+    }
+
+    public function setAppartiens(?Categorie $appartiens): static
+    {
+        $this->appartiens = $appartiens;
+
+        return $this;
+    }
+
+    public function getVaux(): ?ETH
+    {
+        return $this->vaux;
+    }
+
+    public function setVaux(?ETH $vaux): static
+    {
+        $this->vaux = $vaux;
 
         return $this;
     }

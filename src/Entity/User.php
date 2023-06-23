@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -42,6 +44,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?bool $proprietaire_NFT = null;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Acheter::class)]
+    private Collection $achats;
+
+    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Adresse $habite = null;
+
+    public function __construct()
+    {
+        $this->achats = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -169,6 +183,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setProprietaireNFT(bool $proprietaire_NFT): static
     {
         $this->proprietaire_NFT = $proprietaire_NFT;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Acheter>
+     */
+    public function getAchats(): Collection
+    {
+        return $this->achats;
+    }
+
+    public function addAchat(Acheter $achat): static
+    {
+        if (!$this->achats->contains($achat)) {
+            $this->achats->add($achat);
+            $achat->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAchat(Acheter $achat): static
+    {
+        if ($this->achats->removeElement($achat)) {
+            // set the owning side to null (unless already changed)
+            if ($achat->getUser() === $this) {
+                $achat->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getHabite(): ?Adresse
+    {
+        return $this->habite;
+    }
+
+    public function setHabite(Adresse $habite): static
+    {
+        $this->habite = $habite;
 
         return $this;
     }

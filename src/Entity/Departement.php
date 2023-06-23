@@ -16,6 +16,9 @@ class Departement
     #[ORM\Column(length: 255)]
     private ?string $dpt_nom = null;
 
+    #[ORM\OneToOne(mappedBy: 'compose', cascade: ['persist', 'remove'])]
+    private ?Commune $commune = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +32,23 @@ class Departement
     public function setDptNom(string $dpt_nom): static
     {
         $this->dpt_nom = $dpt_nom;
+
+        return $this;
+    }
+
+    public function getCommune(): ?Commune
+    {
+        return $this->commune;
+    }
+
+    public function setCommune(Commune $commune): static
+    {
+        // set the owning side of the relation if necessary
+        if ($commune->getCompose() !== $this) {
+            $commune->setCompose($this);
+        }
+
+        $this->commune = $commune;
 
         return $this;
     }

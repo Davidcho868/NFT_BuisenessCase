@@ -175,7 +175,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isIsProprietaire(): ?bool
+    public function getIsProprietaire(): ?bool
     {
         return $this->is_proprietaire;
     }

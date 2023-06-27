@@ -30,7 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 255)]
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 255)]
@@ -43,18 +43,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeInterface $date_naissance = null;
 
     #[ORM\Column]
-    private ?bool $proprietaire_NFT = null;
-
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Acheter::class)]
-    private Collection $achats;
+    private ?bool $is_proprietaire = null;
 
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Adresse $habite = null;
+    private ?Adresse $adresses = null;
+
+    #[ORM\ManyToMany(targetEntity: Acheter::class, inversedBy: 'users')]
+    private Collection $users;
 
     public function __construct()
     {
-        $this->achats = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,14 +175,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function isProprietaireNFT(): ?bool
+    public function isIsProprietaire(): ?bool
     {
-        return $this->proprietaire_NFT;
+        return $this->is_proprietaire;
     }
 
-    public function setProprietaireNFT(bool $proprietaire_NFT): static
+    public function setIsProprietaire(bool $is_proprietaire): static
     {
-        $this->proprietaire_NFT = $proprietaire_NFT;
+        $this->is_proprietaire = $is_proprietaire;
+
+        return $this;
+    }
+
+    public function getAdresses(): ?Adresse
+    {
+        return $this->adresses;
+    }
+
+    public function setAdresses(Adresse $adresses): static
+    {
+        $this->adresses = $adresses;
 
         return $this;
     }
@@ -190,41 +202,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return Collection<int, Acheter>
      */
-    public function getAchats(): Collection
+    public function getUsers(): Collection
     {
-        return $this->achats;
+        return $this->users;
     }
 
-    public function addAchat(Acheter $achat): static
+    public function addUser(Acheter $user): static
     {
-        if (!$this->achats->contains($achat)) {
-            $this->achats->add($achat);
-            $achat->setUser($this);
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
         }
 
         return $this;
     }
 
-    public function removeAchat(Acheter $achat): static
+    public function removeUser(Acheter $user): static
     {
-        if ($this->achats->removeElement($achat)) {
-            // set the owning side to null (unless already changed)
-            if ($achat->getUser() === $this) {
-                $achat->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getHabite(): ?Adresse
-    {
-        return $this->habite;
-    }
-
-    public function setHabite(Adresse $habite): static
-    {
-        $this->habite = $habite;
+        $this->users->removeElement($user);
 
         return $this;
     }

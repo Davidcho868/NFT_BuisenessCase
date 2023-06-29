@@ -112,4 +112,8 @@ class Adresse
 
         return $this;
     }
+
+    public function __toString() {
+        return (string)$this->getNumero(). ' '. $this->getRue(). ' '. $this->getCodePostal(). ' '. $this->getVille(). ' '. $this->getDepartement();
+    }
 }

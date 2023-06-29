@@ -17,7 +17,7 @@ class Categorie
     private ?string $nom_categorie = null;
 
     #[ORM\ManyToOne(inversedBy: 'categories')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?NFT $nFT = null;
 
     public function getId(): ?int

@@ -5,7 +5,7 @@
 {% block body %}
 
     <h1 class="text-center">Inscription</h1>
-<div class="d-flex justify-content-center align-items-center" id="login">
+
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
@@ -23,12 +23,12 @@
         }) }}
         
         {{ form_row(registrationForm.adresses, {
-            label: 'Votre adresse :'
+            label: 'Votre adresse'
         })}}
 
 
 
         <button type="submit" class="btn btn-lg btn-primary">Valider</button>
     {{ form_end(registrationForm) }}
-</div>
+
 {% endblock %}

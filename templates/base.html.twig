@@ -32,6 +32,9 @@
 							<li class="nav-item">
 								<a class="nav-link text-white" href="{{ path('app_mon_compte')}}">Mon Compte</a>
 							</li>
+							<li class="nav-item">
+								<a class="nav-link text-white" href="{{ path('app_n_f_t_creation')}}">Création</a>
+							</li>
 							{% if app.user %}
 							<li class="nav-item">
 								<a class="nav-link text-white" href="{{ path('app_logout') }}">Logout</a>
@@ -71,10 +74,10 @@
 			</footer>
 		{% endblock %}
 
-		{% block javascripts %}{% endblock %}
+		
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 		<script src="{{asset('js/collection.js')}}" defer></script>
+		{% block javascripts %}{% endblock %}
 	</body>
 </html>
-    </body>
-</html>
+

@@ -3,9 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\ImageRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[Vich\Uploadable]
 class Image
 {
     #[ORM\Id]
@@ -24,6 +30,13 @@ class Image
 
     #[ORM\OneToOne(mappedBy: 'images', cascade: ['persist', 'remove'])]
     private ?NFT $nFT = null;
+
+    #[Vich\UploadableField(mapping: 'nft_image', fileNameProperty:'liens')]
+    private ?File $file = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedDate = null;
+
 
     public function getId(): ?int
     {
@@ -79,6 +92,34 @@ class Image
         }
 
         $this->nFT = $nFT;
+
+        return $this;
+    }
+
+
+	public function getFile(): ?File {
+            		return $this->file;
+            	}
+	
+	
+	public function setFile(File|UploadedFile|null $file): self {
+            		$this->file = $file;
+            
+                    if(null !== $file); {
+                        $this->setUpdatedDate(new \DateTime);
+                    }
+                    
+            		return $this;
+            	}
+
+    public function getUpdatedDate(): ?\DateTimeInterface
+    {
+        return $this->updatedDate;
+    }
+
+    public function setUpdatedDate(?\DateTimeInterface $updatedDate): static
+    {
+        $this->updatedDate = $updatedDate;
 
         return $this;
     }

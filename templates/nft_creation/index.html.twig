@@ -9,26 +9,25 @@
     {{ form_row(form.valeur) }}
     {{ form_row(form.prix) }}
     {{ form_row(form.is_vente) }}
-    
- <h2>{{ form_label(form.images) }}</h2>
-        <button type="button" class="add_item_link btn btn-success" data-collection-holder-class="chapters">Ajouter une image</button>
+    <h2>{{ form_label(form.categories) }}</h2>
+        <button type="button" class="add_item_link btn btn-success" data-collection-holder-class="categories">Ajouter Une Catégorie</button>
         <ul
-            class="chapters"
-            data-index="{{ form.images|length > 0 ? form.chapters|last.vars.name + 1 : 0 }}"
-            data-prototype="{{ form_widget(form.images.vars.prototype)|e('html_attr') }}"
-            data-prototype-name="__{{ form.images.vars.name }}__"
+            class="categories"
+            data-index="{{ form.categories|length > 0 ? form.categories|last.vars.name + 1 : 0 }}"
+            data-prototype="{{ form_widget(form.categories.vars.prototype)|e('html_attr') }}"
+            data-prototype-name="__{{ form.categories.vars.name }}__"
             data-collection-holder
         >
-            {% for NFTCreationForm in form.images %}
+            {% for NFTCreationForm in form.categories %}
                 <li data-collection-element>
                     {{ form_widget(NFTCreationForm) }}
                 </li>
             {% endfor %}
         </ul>
+        
+    {{ form_row(form.images) }}
+
     <button type="submit" class="btn btn-primary mb-5">Creation</button>
 {{ form_end(form) }}
 {% endblock %}
 
-{% block javascripts %}
-    <script src="{{ asset('js/collection.js') }}"></script>
-{% endblock %}

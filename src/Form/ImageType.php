@@ -19,9 +19,9 @@ class ImageType extends AbstractType
                 'label'=> 'Nom du NFT'
             ])
             ->add('description')
-            ->add('liens', VichImageType::class, [
+            ->add( 'liens', VichImageType::class, [
                 'label' => 'NFT',
-                'required' => true
+                
             ])
         ;
     }

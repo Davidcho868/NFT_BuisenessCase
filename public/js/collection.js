@@ -1,30 +1,51 @@
 const addFormToCollection = (e) => {
   const collectionHolder = document.querySelector(
-    "." + e.currentTarget.dataset.collectionHolderClass
+      "." + e.currentTarget.dataset.collectionHolderClass
   );
 
   const item = document.createElement("li");
 
   let protoName = collectionHolder.dataset.prototypeName;
 
-  var regex = new RegExp(protoName, "g");
+  var regex = new RegExp(protoName,"g");
 
   item.innerHTML = collectionHolder.dataset.prototype.replace(
-    regex,
-    collectionHolder.dataset.index
+      regex,
+      collectionHolder.dataset.index
   );
 
   collectionHolder.appendChild(item);
 
   collectionHolder.dataset.index++;
-  triggerEvents();
+
+  addChildFormDeleteLink(item);
+
+  initEvents();
 };
 
-const triggerEvents = function () {
-  document.querySelectorAll(".add_item_link").forEach((btn) => {
-    btn.removeEventListener("click", addFormToCollection);
-    btn.addEventListener("click", addFormToCollection);
+const addChildFormDeleteLink = (item) => {
+  const removeFormButton = document.createElement("button");
+  removeFormButton.innerText = "Supprimer";
+  removeFormButton.classList.add("btn");
+  removeFormButton.classList.add("btn-danger");
+
+  item.append(removeFormButton);
+
+  removeFormButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      // remove the li for the tag form
+      item.remove();
   });
 };
 
-triggerEvents();
+const initEvents = function() {
+  document.querySelectorAll("[data-collection-element]").forEach((element) => {
+      addChildFormDeleteLink(element);
+  });
+  document.querySelectorAll(".add_item_link").forEach((btn) => {
+      btn.removeEventListener("click", addFormToCollection);
+      btn.addEventListener("click", addFormToCollection);
+  });
+};
+
+initEvents();

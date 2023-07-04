@@ -16,6 +16,7 @@ class MonCompteController extends AbstractController
     #[Route('/mon/compte', name: 'app_mon_compte')]
     public function modif(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $userPasswordHasher): Response
     {
+        /** @var \App\Entity\User */
         $user = $this->getUser();
         $form = $this->createForm(MonCompteType::class, $user);
 

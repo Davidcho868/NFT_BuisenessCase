@@ -7,7 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: NFTRepository::class)]
+
 class NFT
 {
     #[ORM\Id]
@@ -31,7 +33,7 @@ class NFT
     #[ORM\JoinColumn(nullable: false)]
     private ?Image $images = null;
 
-    #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: Categorie::class)]
+    #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: Categorie::class, cascade: ['persist', 'remove'])]
     private Collection $categories;
 
     #[ORM\OneToMany(mappedBy: 'nFT', targetEntity: ETH::class)]

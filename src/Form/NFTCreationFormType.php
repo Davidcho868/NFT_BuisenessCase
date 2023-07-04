@@ -2,7 +2,11 @@
 
 namespace App\Form;
 
+
 use App\Entity\NFT;
+
+use App\Form\CategorieType;
+use App\Form\ImageType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -24,14 +28,21 @@ class NFTCreationFormType extends AbstractType
             ->add('is_vente', CheckboxType::class, [
                 'label' => 'En vente',
             ])
-            ->add('images', CollectionType::class, [
-                'entry_type'=> ImageType::class,
-                'label'=> 'NFT',
-                'prototype_name' => '__images__',
-                'allow_add' =>true,
-                'by_reference' =>false,
-                'entry_options' => ['label' => false],
+            ->add('categories', CollectionType::class, [
+                'entry_type'     => CategorieType::class,
+                'entry_options'  => [
+                    'label' => false,
+                ],
+                'prototype_name' => 'categories',
+                'label'          => false,
+                'allow_add'      => true,
+                'allow_delete'   => true,
+                // 'multiple' => true,
+                // 'expended' => true,
+                'by_reference'   => false,
             ])
+            
+            ->add('images', ImageType::class)
         ;
     }
 
